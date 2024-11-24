@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+import { PropsWithChildren } from "react";
+import styles from "./Avatar.module.scss";
+
+const Avatar = ({ children }: PropsWithChildren) => {
+  return <div className={styles.avatar}>{children}</div>;
+=======
 import { useState } from "react";
 import styles from "./Avatar.module.scss";
 import Dropdown from "./Dropdown";
@@ -26,6 +33,7 @@ const Avatar = () => {
       )}
     </div>
   );
+>>>>>>> 79bf93f (Initial commit)
 };
 
 export default Avatar;
