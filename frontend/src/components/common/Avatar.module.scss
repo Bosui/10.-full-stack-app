@@ -10,3 +10,11 @@
   align-items: center;
   text-transform: capitalize;
 }
+.avatarContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar {
+  cursor: pointer;
+}

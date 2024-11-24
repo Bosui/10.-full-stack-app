@@ -1,8 +1,8 @@
 import express from "express";
-import Category from "../models/Category";
-import Business from "../models/Business";
-import Booking from "../models/Booking";
 import authMiddleware from "../middlewares/authMiddleware";
+import Booking from "../models/Booking";
+import Business from "../models/Business";
+import Category from "../models/Category";
 
 const router = express.Router();
 
@@ -40,13 +40,16 @@ router.post("/", authMiddleware, async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
+    console.log("gauta uzklausa pagal id:", req.params.id);
     const business = await Business.findById(req.params.id);
+    console.log(business);
     if (business) {
       res.json(business);
     } else {
       res.status(404).send("Business not found");
     }
   } catch (err) {
+    console.log("nepaejo pagal id:");
     res.status(500).json({ message: "Error fetching business", error: err });
   }
 });
@@ -78,5 +81,35 @@ router.get("/:id/bookings/date/:date", async (req, res) => {
     });
   }
 });
+
+router.post("/businesses", authMiddleware, async (req, res) => {
+  try {
+    const {
+      name,
+      about,
+      address,
+      category,
+      contactPerson,
+      email,
+      imageUrls,
+    } = req.body;
+
+    const newBusiness = new Business({
+      name,
+      about,
+      address,
+      category,
+      contactPerson,
+      email,
+      imageUrls,
+    });
+
+    const savedBusiness = await newBusiness.save();
+    res.status(201).json(savedBusiness);
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
+});
+
 
 export default router;

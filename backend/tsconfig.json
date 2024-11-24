@@ -1,14 +1,26 @@
 {
   "compilerOptions": {
-    "target": "es6", // Nustato ECMAScript tikslinę versiją
-    "module": "commonjs", // Nustato modulio kodo generavimą
-    "outDir": "./dist", // Nustato išvesties struktūrą į šį katalogą
-    "rootDir": "./src", // Nustato įvesties failų šakninį katalogą
-    "strict": true, // Įjungia visus griežtus tipo tikrinimo nustatymus
-    "esModuleInterop": true, // Įgalina suderinamumą su CommonJS ir ES moduliais
-    "skipLibCheck": true, // Praleidžia deklaracijų failų tikrinimą
-    "forceConsistentCasingInFileNames": true // Draudžia nevienodai atitinkančius failų pavadinimus
+    "jsx": "react-jsx",
+    "target": "esnext",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ]
+    }
   },
-  "include": ["src"], // Įtraukia visus failus iš "src" katalogo
-  "exclude": ["node_modules"] // Išskiria "node_modules" katalogą
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

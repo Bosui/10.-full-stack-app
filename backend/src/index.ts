@@ -1,10 +1,13 @@
-import express from "express";
 import cors from "cors";
-import authRoutes from "./routes/authRoutes";
-import categoryRoutes from "./routes/categoryRoutes";
-import businessRoutes from "./routes/businessRoutes";
-import bookingRoutes from "./routes/bookingRoutes";
+import dotenv from "dotenv";
+import express from "express";
 import { connectToDb, PORT } from "./db";
+import authRoutes from "./routes/authRoutes";
+import bookingRoutes from "./routes/bookingRoutes";
+import businessRoutes from "./routes/businessRoutes";
+import categoryRoutes from "./routes/categoryRoutes";
+
+dotenv.config(); 
 
 const app = express();
 app.use(express.json());

@@ -1,4 +1,7 @@
+import { ReactNode } from "react";
+
 export interface Business {
+  location: ReactNode;
   _id: string;
   name: string;
   about: string;
