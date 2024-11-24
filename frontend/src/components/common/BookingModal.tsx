@@ -1,16 +1,27 @@
+import axios from "axios";
 import React, { useState } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css"; // Importuojame kalendoriaus stilių
+import "react-calendar/dist/Calendar.css";
 import styles from "./BookingModal.module.scss";
 
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  businessId: string;
+  userEmail: string;
+  userName: string;
 }
 
-const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
+const BookingModal: React.FC<BookingModalProps> = ({
+  isOpen,
+  onClose,
+  businessId,
+  userEmail,
+  userName,
+}) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const timeSlots = [
     "10:00 AM",
@@ -23,14 +34,40 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
     "2:00 PM",
   ];
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (selectedDate && selectedTime) {
-      console.log("Selected Date:", selectedDate.toDateString());
-      console.log("Selected Time Slot:", selectedTime);
-      onClose();
-    } else {
-      alert("Please select a date and time slot.");
+
+    if (!selectedDate || !selectedTime) {
+      alert("Please select both a date and time.");
+      return;
+    }
+
+    const bookingData = {
+      businessId, // Iš props
+      date: selectedDate.toISOString(), // ISO formato data
+      time: selectedTime, // Pasirinktas laikas
+      userEmail, // Iš props
+      userName, // Iš props
+      status: "pending", // Numatytoji status reikšmė
+    };
+
+    try {
+      setIsSubmitting(true);
+      console.log("Sending booking data:", bookingData); // Debug logas
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/bookings`, // URL iš .env
+        bookingData
+      );
+
+      console.log("Booking created successfully:", response.data);
+      alert("Booking successfully created!");
+      onClose(); // Uždaro modalą
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      alert("Failed to create booking. Please try again.");
+    } finally {
+      setIsSubmitting(false); // Atstatome submit būseną
     }
   };
 
@@ -45,17 +82,15 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
         <h2>Book a Service</h2>
         <p>Select Date and Time slot to book a service</p>
         <form onSubmit={handleSubmit}>
-          {/* Kalendorius */}
           <div className={styles.field}>
             <label>Select Date</label>
             <Calendar
               onChange={(date) => setSelectedDate(date as Date)}
               value={selectedDate}
-              minDate={new Date()} // Negalima pasirinkti praeities datų
+              minDate={new Date()}
               className={styles.calendar}
             />
           </div>
-          {/* Laiko intervalai */}
           <div className={styles.field}>
             <label>Select Time Slot</label>
             <div className={styles.timeSlots}>
@@ -73,9 +108,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
               ))}
             </div>
           </div>
-          {/* Pateikimo mygtukas */}
-          <button type="submit" className={styles.submitButton}>
-            Confirm Booking
+          <button
+            type="submit"
+            className={styles.submitButton}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Submitting..." : "Confirm Booking"}
           </button>
         </form>
       </div>

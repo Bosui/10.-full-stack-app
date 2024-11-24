@@ -4,14 +4,17 @@ import styles from "./Sidebar.module.scss";
 
 interface SidebarProps {
   business: {
+    _id: string;
     name: string;
     address: string;
     contactPerson: string;
     email: string;
   };
+  userEmail: string;
+  userName: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ business }) => {
+const Sidebar: React.FC<SidebarProps> = ({ business, userEmail, userName }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
@@ -29,7 +32,15 @@ const Sidebar: React.FC<SidebarProps> = ({ business }) => {
         <p>Contact: {business.contactPerson}</p>
         <p>Email: {business.email}</p>
       </div>
-      <BookingModal isOpen={isModalOpen} onClose={toggleModal} />
+      <BookingModal
+        isOpen={isModalOpen}
+        onClose={toggleModal}
+        businessId={business._id}
+        // userEmail={userEmail}
+        //       userName={userName}
+        userEmail="test@example.com" // Tikras vartotojo el. paštas
+        userName="John Doe"         // Tikras vartotojo vardas
+      />
     </div>
   );
 };
