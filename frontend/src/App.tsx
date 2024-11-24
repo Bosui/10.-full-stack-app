@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.MY_BOOKINGS,
-        element: <MyBooking userEmail="test@example.com" />, // Vartotojo el. paštą perduokite kaip props
+        element: <MyBooking userEmail="test@example.com" />, // Vartotojo el. paštą  kaip props
       },
             {
           path: "/business-details/:id", // Maršrutas verslo detalėms
