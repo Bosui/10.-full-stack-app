@@ -1,38 +1,33 @@
-import { useState } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import styles from "./Avatar.module.scss";
 import Dropdown from "./Dropdown";
-import MyBooking from "./MyBooking"; // Naujas komponentas užsakymams atvaizduoti
 
-const Avatar = () => {
+interface DropdownItem {
+  label: string;
+  onClick: () => void;
+}
+
+const Avatar: React.FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isBookingOpen, setIsBookingOpen] = useState(false); // Atidarymo būsena užsakymams
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleMyBooking = () => {
-    setIsBookingOpen(true);
-    setIsOpen(false); // Uždaro dropdown meniu
+    setIsOpen((prevState) => !prevState);
   };
 
   return (
     <div className={styles.avatarContainer}>
       <div className={styles.avatar} onClick={toggleDropdown}>
-        A {/* Placeholder for avatar initial */}
+        {children || "A"} {/* Placeholder for avatar initial */}
       </div>
       {isOpen && (
         <Dropdown
           items={[
             { label: "My Account", onClick: () => console.log("My Account") },
-            { label: "My Booking", onClick: handleMyBooking }, // Atidaro užsakymų sąrašą
+            { label: "My Booking", onClick: () => console.log("My Booking") },
             { label: "Logout", onClick: () => console.log("Logout") },
           ]}
-          onClose={() => setIsOpen(false)}
+          onClose={() => setIsOpen(false)} // Uždaro dropdown meniu
         />
-      )}
-      {isBookingOpen && (
-        <MyBooking onClose={() => setIsBookingOpen(false)} /> // Užsakymų komponentas
       )}
     </div>
   );

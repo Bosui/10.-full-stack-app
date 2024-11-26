@@ -1,5 +1,4 @@
 // src/App.tsx
-import MyBooking from "@/components/common/MyBooking";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SnackbarProvider } from "notistack";
 import React from "react";
@@ -40,24 +39,20 @@ const router = createBrowserRouter([
         element: <SearchCategory />,
       },
       {
-        path: ROUTES.MY_BOOKINGS,
-        element: <MyBooking userEmail="test@example.com" />, // Vartotojo el. paštą  kaip props
-      },
-            {
-          path: "/business-details/:id", // Maršrutas verslo detalėms
-          element: <BusinessDetails />,
-        },
-            {
-          path: "/",
-          element: <BusinessList />, // Sąrašo komponentas
-        },
-        {
-          path: "/business/:id", // Detalių puslapis
-          element: <BusinessDetails />, // Komponentas, kuris rodo detales
-        },
-          ],
-        },
-        {
+    path: "/business-details/:id", // Maršrutas verslo detalėms
+    element: <BusinessDetails />,
+  },
+      {
+    path: "/",
+    element: <BusinessList />, // Sąrašo komponentas
+  },
+  {
+    path: "/business/:id", // Detalių puslapis
+    element: <BusinessDetails />, // Komponentas, kuris rodo detales
+  },
+    ],
+  },
+  {
     element: <AuthLayout />,
     errorElement: <ErrorPage />,
     children: [
