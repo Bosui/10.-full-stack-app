@@ -1,7 +1,7 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import { connectToDb, PORT } from "./db";
+import connectDB from "./db";
 import authRoutes from "./routes/authRoutes";
 import bookingRoutes from "./routes/bookingRoutes";
 import businessRoutes from "./routes/businessRoutes";
@@ -18,10 +18,10 @@ app.use("/categories", categoryRoutes);
 app.use("/businesses", businessRoutes);
 app.use("/bookings", bookingRoutes);
 
-connectToDb()
-  .then(() => {
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  })
-  .catch((err) => {
-    console.error("Failed to connect to the database", err);
-  });
+const PORT = process.env.PORT || 5000;
+
+// Prisijungiame prie MongoDB
+connectDB();
+
+// Sukuriame serverį
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

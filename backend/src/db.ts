@@ -1,19 +1,16 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
 
-const PORT = process.env.PORT ?? 5000;
-
-const connectToDb = async () => {
+const connectDB = async () => {
   try {
-    const url = process.env.MONGO_URI;
-    if (url === undefined) return;
-    await mongoose.connect(url);
-    console.log("Connected to MongoDB with Mongoose");
-  } catch (err) {
-    console.error("Could not connect to the database", err);
-    process.exit(1);
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    process.exit(1); // Sustabdo procesą, jei prisijungti nepavyko
   }
 };
 
-export { connectToDb, PORT };
+export default connectDB;
